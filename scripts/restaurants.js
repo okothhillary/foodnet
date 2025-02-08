@@ -1,5 +1,3 @@
-// restaurants.js
-// Fetch and display restaurants using Overpass API
 
 class RestaurantApp {
     constructor() {
@@ -10,11 +8,11 @@ class RestaurantApp {
     }
 
     async init() {
-        this.getUserLocation();
+        await this.getUserLocation();
         this.searchBar.addEventListener("input", () => this.filterRestaurants());
     }
 
-    getUserLocation() {
+    async getUserLocation() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 async (position) => {
@@ -24,42 +22,44 @@ class RestaurantApp {
                     };
                     console.log("User Location:", userLocation);
                     await this.fetchRestaurants(userLocation);
+                    this.displayRestaurants(this.restaurants);
                 },
-                (error) => {
+                async (error) => {
                     console.error("Error getting location:", error);
-                    alert("Unable to get location. Please enable location services.");
-                }
+                    console.log("Using fallback location: Nairobi");
+                    const fallbackLocation = { lat: -1.286389, lng: 36.817223 }; // Nairobi
+                    await this.fetchRestaurants(fallbackLocation);
+                    this.displayRestaurants(this.restaurants);
+                },
+                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
             );
         } else {
             console.error("Geolocation is not supported by this browser.");
-            alert("Your browser does not support geolocation.");
         }
     }
 
     async fetchRestaurants(location) {
-        const radius = 10; // 10 km
         const query = `
             [out:json];
-            (
-                node["amenity"="restaurant"](around:${radius * 1000}, ${location.lat}, ${location.lng});
-                way["amenity"="restaurant"](around:${radius * 1000}, ${location.lat}, ${location.lng});
-                relation["amenity"="restaurant"](around:${radius * 1000}, ${location.lat}, ${location.lng});
-            );
-            out center;`;
-
-        const url = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
+            node
+                ["amenity"="restaurant"]
+                (around:10000, ${location.lat}, ${location.lng});
+            out body;
+        `;
 
         try {
-            const response = await fetch(url);
+            const response = await fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`);
             const data = await response.json();
-
-            this.restaurants = data.elements.map(place => ({
-                name: place.tags.name || "Unnamed Restaurant",
-                address: place.tags["addr:street"] || "Unknown Address",
-                osmId: place.id,
-            }));
-
-            this.displayRestaurants(this.restaurants);
+            
+            // filter for showing 20 restaurants at most
+            this.restaurants = data.elements
+                .map(place => ({
+                    name: place.tags.name || "These guys dont want to be know Restaurant",
+                    address: place.tags["addr:street"] || "Address not available",
+                    placeId: place.id,
+                }))
+                .slice(0, 20); 
+            
         } catch (error) {
             console.error("Error fetching restaurant data:", error);
         }
@@ -68,18 +68,17 @@ class RestaurantApp {
     displayRestaurants(restaurants) {
         this.restaurantsList.innerHTML = "";
         if (restaurants.length === 0) {
-            this.restaurantsList.innerHTML = "<p>No restaurants found in this area.</p>";
+            this.restaurantsList.innerHTML = "<p>Fasting came soon for you! A blessing!</p>";
             return;
         }
+
         restaurants.forEach(restaurant => {
             const restaurantCard = document.createElement("div");
             restaurantCard.className = "restaurant-card";
             restaurantCard.innerHTML = `
                 <h3>${restaurant.name}</h3>
                 <p>${restaurant.address}</p>
-                <button onclick="window.location.href='dishes.html?restaurant=${restaurant.osmId}'">
-                    View Dishes
-                </button>
+                <button onclick="window.location.href='dishes.html?restaurant=${restaurant.placeId}'">View Dishes</button>
             `;
             this.restaurantsList.appendChild(restaurantCard);
         });
@@ -87,11 +86,12 @@ class RestaurantApp {
 
     filterRestaurants() {
         const query = this.searchBar.value.toLowerCase();
-        const filteredRestaurants = this.restaurants.filter(restaurant =>
+        const filteredRestaurants = this.restaurants.filter(restaurant => 
             restaurant.name.toLowerCase().includes(query)
         );
         this.displayRestaurants(filteredRestaurants);
     }
 }
 
+// start the app when the page loads
 window.addEventListener("DOMContentLoaded", () => new RestaurantApp());

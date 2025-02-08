@@ -53,8 +53,8 @@ class RestaurantApp {
             // filter for showing 20 restaurants at most
             this.restaurants = data.elements
                 .map(place => ({
-                    name: place.tags.name || "These guys love hiding!",
-                    address: place.tags["addr:street"] || "Address not available",
+                    name: place.tags.name || "Anonymous!",
+                    address: place.tags["addr:street"] || "These guys love hiding",
                     placeId: place.id,
                 }))
                 .slice(0, 20);

@@ -1,4 +1,3 @@
-
 class RestaurantApp {
     constructor() {
         this.restaurantsList = document.getElementById("restaurants-list");
@@ -50,16 +49,16 @@ class RestaurantApp {
         try {
             const response = await fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`);
             const data = await response.json();
-            
+
             // filter for showing 20 restaurants at most
             this.restaurants = data.elements
                 .map(place => ({
-                    name: place.tags.name || "These guys dont want to be know Restaurant",
+                    name: place.tags.name || "These guys love hiding!",
                     address: place.tags["addr:street"] || "Address not available",
                     placeId: place.id,
                 }))
-                .slice(0, 20); 
-            
+                .slice(0, 20);
+
         } catch (error) {
             console.error("Error fetching restaurant data:", error);
         }
@@ -86,7 +85,7 @@ class RestaurantApp {
 
     filterRestaurants() {
         const query = this.searchBar.value.toLowerCase();
-        const filteredRestaurants = this.restaurants.filter(restaurant => 
+        const filteredRestaurants = this.restaurants.filter(restaurant =>
             restaurant.name.toLowerCase().includes(query)
         );
         this.displayRestaurants(filteredRestaurants);

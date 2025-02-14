@@ -1,9 +1,6 @@
-// scripts/dish.js
+import { addToCart, updateCart, getCart, updateCartDisplay } from './cart.js';
 
 const API_URL = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
-
-// Import cart functions
-import { addToCart, updateCart, getCart, updateCartDisplay } from './cart.js';
 
 // Fetch all meals data from the API
 async function fetchAllMeals() {
@@ -14,7 +11,7 @@ async function fetchAllMeals() {
             data.meals.forEach(meal => {
                 if (!meal.strMealThumb) {
                     console.error("Missing image for meal:", meal);
-                    meal.strMealThumb = 'default-image.jpg'; // Use default image if missing
+                    meal.strMealThumb = 'default-image.jpg'; 
                 }
             });
         }
@@ -44,18 +41,17 @@ function getCurrentPage() {
     return parseInt(params.get('page')) || 1;
 }
 
-// Render dishes and allow adding to cart dynamically
 function renderDishes(meals, currentPage) {
     const dishesList = document.getElementById('dishes-list');
-    dishesList.innerHTML = ''; // Clear existing content
-    const cart = getCart(); // Get current cart data
+    dishesList.innerHTML = ''; 
+    const cart = getCart();
 
     const startIndex = (currentPage - 1) * 15;
     const endIndex = startIndex + 15;
     const paginatedMeals = meals.slice(startIndex, endIndex);
 
     if (paginatedMeals.length === 0) {
-        dishesList.innerHTML = "<p>No dishes available for this restaurant.</p>";
+        dishesList.innerHTML = "<p>These guys seem to be fasting.</p>";
         return;
     }
 
@@ -66,7 +62,7 @@ function renderDishes(meals, currentPage) {
 
         // Meal Image
         const img = document.createElement('img');
-        img.src = meal.strMealThumb || 'default-image.jpg'; // Fallback if no image
+        img.src = meal.strMealThumb || 'default-image.jpg';
         img.alt = meal.strMeal;
         dishDiv.appendChild(img);
 
@@ -77,14 +73,14 @@ function renderDishes(meals, currentPage) {
 
         // Meal Description
         const description = document.createElement('p');
-        const descText = meal.strInstructions ? meal.strInstructions.substring(0, 100) + '...' : 'No description available';
+        const descText = meal.strInstructions ? meal.strInstructions.substring(0, 100) + '...' : 'Meal is too alien for a description. Ha!';
         description.textContent = descText;
         dishDiv.appendChild(description);
 
-        // Meal Price (random)
+         
         const price = document.createElement('p');
         const randomPrice = (Math.floor(Math.random() * 21) + 10).toFixed(2);
-        price.textContent = `Price: $${randomPrice}`;
+        price.textContent = `Price: Ksh.${randomPrice}`;
         dishDiv.appendChild(price);
 
         // Cart Controls
@@ -95,7 +91,7 @@ function renderDishes(meals, currentPage) {
         minusButton.textContent = '-';
         minusButton.addEventListener('click', () => {
             updateCart(meal.idMeal, -1);
-            updateCartDisplay(); // Dynamically update cart
+            updateCartDisplay(); 
             quantityDisplay.textContent = cart[meal.idMeal] ? cart[meal.idMeal].quantity : 0;
         });
 
@@ -106,7 +102,7 @@ function renderDishes(meals, currentPage) {
         plusButton.textContent = '+';
         plusButton.addEventListener('click', () => {
             addToCart(meal);
-            updateCartDisplay(); // Update cart dynamically
+            updateCartDisplay();
             quantityDisplay.textContent = cart[meal.idMeal] ? cart[meal.idMeal].quantity : 0;
         });
 

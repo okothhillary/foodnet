@@ -1,17 +1,12 @@
-// scripts/cart.js
-
 let cart = JSON.parse(localStorage.getItem("cart")) || {};
 
-// Function to retrieve cart data
 export function getCart() {
     return cart;
 }
 
-// Function to add item to cart
 export function addToCart(meal) {
     const { idMeal, strMeal, strMealThumb } = meal;
 
-    // Check if the meal has a valid image
     if (!strMealThumb) {
         console.error("Meal image is missing:", meal);
         return;
@@ -27,7 +22,6 @@ export function addToCart(meal) {
     updateCartDisplay();
 }
 
-// Function to update item quantity in cart
 export function updateCart(mealId, change) {
     if (cart[mealId]) {
         cart[mealId].quantity += change;
@@ -40,19 +34,16 @@ export function updateCart(mealId, change) {
     updateCartDisplay();
 }
 
-// Function to remove an item from cart
 function removeFromCart(mealId) {
     delete cart[mealId];
     saveCart();
     updateCartDisplay();
 }
 
-// Save cart to localStorage
 function saveCart() {
     localStorage.setItem("cart", JSON.stringify(cart));
 }
 
-// Function to update cart UI dynamically
 export function updateCartDisplay() {
     const cartItemsContainer = document.getElementById("cart-items");
     cartItemsContainer.innerHTML = ""; 
@@ -69,7 +60,7 @@ export function updateCartDisplay() {
         cartItemDiv.className = "cart-item";
 
         const img = document.createElement("img");
-        img.src = item.strMealThumb || 'default-image.jpg'; // Fallback image if none exists
+        img.src = item.strMealThumb || 'default-image.jpg';
         img.alt = item.strMeal;
 
         const name = document.createElement("span");

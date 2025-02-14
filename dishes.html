@@ -4,19 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dishes</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles/dish.css">
+    <script type="module" src="scripts/dish.js"></script>
 </head>
 <body>
     <header>
         <h1>Available Dishes</h1>
     </header>
-    <main>
+    
+    <div class="container">
+        <!-- Dishes Section -->
         <section id="dishes-list">
             <!-- Dishes will be dynamically added here -->
         </section>
-    </main>
-    <script src="dishes.js" type="module"></script>
+
+        <!-- Cart Section -->
+        <aside id="cart">
+            <h2>Cart</h2>
+            <div id="cart-items">
+                <!-- Cart items will be displayed here (only one dish tall) -->
+            </div>
+        </aside>
+    </div>
 </body>
 </html>
-
-

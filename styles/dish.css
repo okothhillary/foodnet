@@ -1,15 +1,18 @@
+/* Reset basic styles */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* Body styling */
 body {
   font-family: 'Helvetica Neue', Arial, sans-serif;
   background-color: #f8f8f8;
   color: #333;
 }
 
+/* Header styling */
 header {
   background-color: #000;
   color: #fff;
@@ -17,6 +20,7 @@ header {
   text-align: center;
 }
 
+/* Main content container */
 main {
   max-width: 1200px;
   margin: 20px auto;
@@ -31,18 +35,20 @@ main {
   gap: 20px;
 }
 
+/* Dishes Section */
 #dishes-list {
   flex: 3;
-  height: 80vh;             
-  overflow-y: auto;         
+  height: 80vh;
+  overflow-y: auto;
   padding-right: 10px;
-  border-right: 2px solid #ccc; 
+  border-right: 2px solid #ccc;
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
 }
 
+/* Dish card styling */
 .dish {
   background-color: #fff;
   border-radius: 10px;
@@ -50,7 +56,7 @@ main {
   width: 300px;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease;
 }
 
@@ -58,12 +64,14 @@ main {
   transform: translateY(-5px);
 }
 
+/* Dish image styling */
 .dish img {
   width: 100%;
   height: 180px;
   object-fit: cover;
 }
 
+/* Dish text content */
 .dish h2,
 .dish p {
   padding: 10px 15px;
@@ -87,6 +95,7 @@ main {
   color: #000;
 }
 
+/* Pagination controls */
 .pagination {
   width: 100%;
   display: flex;
@@ -109,7 +118,8 @@ main {
   background-color: #444;
 }
 
-\.cart-controls {
+/* Cart controls styling */
+.cart-controls {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -141,16 +151,18 @@ main {
   font-size: 16px;
 }
 
+/* Cart Section */
 #cart {
   flex: 1;
-  height: 80vh;  
-  overflow-y: auto;        
+  height: 80vh;
+  overflow-y: auto;
   background-color: #f5f5f5;
   padding: 15px;
   border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Cart Items */
 .cart-item {
   display: flex;
   align-items: center;
@@ -158,7 +170,7 @@ main {
   background-color: white;
   padding: 10px;
   border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin-bottom: 10px;
 }
 
@@ -169,6 +181,13 @@ main {
   border-radius: 5px;
 }
 
+.cart-item span {
+  flex: 1;
+  margin-left: 10px;
+  font-size: 1em;
+}
+
+/* Remove Button */
 .remove-btn {
   background-color: red;
   color: white;
@@ -182,6 +201,7 @@ main {
   background-color: darkred;
 }
 
+/* Checkout Button */
 .checkout-btn {
   width: 100%;
   background-color: black;

@@ -69,11 +69,9 @@ export function updateCartDisplay() {
         img.src = item.strMealThumb || 'default-image.jpg';
         img.alt = item.strMeal;
 
-        // Calculate line subtotal = item.price * item.quantity
         const unitPrice = item.price ? parseFloat(item.price) : 0;
         const lineSubtotal = unitPrice * item.quantity;
 
-        // Show the meal name, quantity, unit price, and line subtotal
         const name = document.createElement("span");
         name.textContent = `${item.strMeal} (Qty: ${item.quantity}) - Ksh. ${unitPrice.toFixed(2)} each, Subtotal: Ksh. ${lineSubtotal.toFixed(2)}`;
 
@@ -89,7 +87,7 @@ export function updateCartDisplay() {
         cartItemsContainer.appendChild(cartItemDiv);
     });
 
-    // Create the checkout button
+    // checkout button
     if (cartEntries.length > 0) {
         const checkoutBtn = document.createElement("button");
         checkoutBtn.textContent = "Checkout";
@@ -99,18 +97,15 @@ export function updateCartDisplay() {
         cartItemsContainer.appendChild(checkoutBtn);
     }
 
-    // === Calculate overall total ===
     const overallTotal = cartEntries.reduce((sum, item) => {
         const price = item.price ? parseFloat(item.price) : 0;
         return sum + (price * item.quantity);
     }, 0);
 
-    // Display the total price
     const totalDiv = document.createElement("div");
     totalDiv.id = "cart-total";
     totalDiv.textContent = `Total Price: Ksh. ${overallTotal.toFixed(2)}`;
     cartItemsContainer.appendChild(totalDiv);
 }
 
-// Keep the existing event listener
 document.addEventListener("DOMContentLoaded", updateCartDisplay);

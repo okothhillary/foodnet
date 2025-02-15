@@ -51,7 +51,7 @@ function renderDishes(meals, currentPage) {
     const paginatedMeals = meals.slice(startIndex, endIndex);
 
     if (paginatedMeals.length === 0) {
-        dishesList.innerHTML = "<p>These guys seem to be fasting.</p>";
+        dishesList.innerHTML = "<p>These guys want you to fast.</p>";
         return;
     }
 
@@ -82,6 +82,8 @@ function renderDishes(meals, currentPage) {
         const randomPrice = (Math.floor(Math.random() * 21) + 10).toFixed(2);
         price.textContent = `Price: Ksh.${randomPrice}`;
         dishDiv.appendChild(price);
+        meal.price = parseFloat(randomPrice);
+
 
         // Cart Controls
         const cartControls = document.createElement('div');

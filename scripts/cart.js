@@ -73,7 +73,7 @@ export function updateCartDisplay() {
         const lineSubtotal = unitPrice * item.quantity;
 
         const name = document.createElement("span");
-        name.textContent = `${item.strMeal} (Qty: ${item.quantity}) - Ksh. ${unitPrice.toFixed(2)} each, Subtotal: Ksh. ${lineSubtotal.toFixed(2)}`;
+        name.textContent = `${item.strMeal} (${item.quantity}) - Ksh. ${unitPrice.toFixed(2)} each, Subtotal: Ksh. ${lineSubtotal.toFixed(2)}`;
 
         const removeBtn = document.createElement("button");
         removeBtn.textContent = "X";

@@ -1,25 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-  <title>Order Confirmation</title>
-  <link rel="stylesheet" href="../styles/payments.css">
+  <title>PayPal Payment (via RapidAPI)</title>
+  <script defer src="../scripts/payments.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background: #f8f8f8;
+    }
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 6px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    h1 {
+      margin-top: 0;
+      text-align: center;
+    }
+    #payment-total {
+      text-align: center;
+      margin: 15px 0;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #444;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    label {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    input {
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    #pay-button {
+      margin-top: 20px;
+      padding: 15px;
+      background: #0070ba;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    #pay-button:hover {
+      background: #005c9c;
+    }
+    .message {
+      text-align: center;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    .success {
+      color: #27ae60;
+    }
+    .error {
+      color: #e74c3c;
+    }
+  </style>
 </head>
-
 <body>
-  <header>
-    <h1>Order Confirmation</h1>
-  </header>
+  <div class="container">
+    <h1>PayPal Payment Demo</h1>
+    <div id="payment-total">Total to Pay: Ksh. 0.00</div>
 
-  <main>
-    <section class="order-summary">
-      <h2>Wueh! Si unakula!</h2>
-      <div id="order-details"></div>
-    </section>
-  </main>
+    <form id="payment-form">
+        <div>
+          <label for="paypal-email">PayPal Email</label>
+          <input type="email" id="paypal-email" placeholder="user@example.com" required>
+        </div>
+        <button id="pay-button" type="submit">Pay Now</button>
+      </form>
+      
 
-  <script src="../scripts/payments.js"></script>
+    <div id="payment-message" class="message"></div>
+  </div>
 </body>
-
 </html>

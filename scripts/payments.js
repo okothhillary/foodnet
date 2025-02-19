@@ -1,44 +1,61 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const cart = JSON.parse(localStorage.getItem('cart')) || {};
+document.addEventListener("DOMContentLoaded", () => {
+    const paymentForm = document.getElementById("payment-form");
+    const paymentTotalEl = document.getElementById("payment-total");
+    const paymentMessage = document.getElementById("payment-message");
   
-    const orderDetails = document.getElementById('order-details');
-  
-    if (Object.keys(cart).length === 0) {
-      orderDetails.innerHTML = "<p>No items in your order.</p>";
-      return;
-    }
-  
+    //total cost from localStorage cart, could've picked it directly from the cart object but I got confused
+    const cart = JSON.parse(localStorage.getItem("cart")) || {};
     let totalPrice = 0;
-  
-    for (let mealId in cart) {
-      const item = cart[mealId];
+    Object.values(cart).forEach(item => {
       const price = item.price ? parseFloat(item.price) : 0;
-      const lineSubtotal = price * item.quantity;
-      totalPrice += lineSubtotal;
+      totalPrice += (price * item.quantity);
+    });
   
-      // container for each ordered item
-      const itemDiv = document.createElement('div');
-      itemDiv.className = 'order-item';
-      itemDiv.innerHTML = `
-        <h3>${item.strMeal}</h3>
-        <img src="${item.strMealThumb}" alt="${item.strMeal}">
-        <p>Quantity: ${item.quantity}</p>
-        <p>Price: Ksh. ${price.toFixed(2)} each</p>
-        <p>Subtotal: Ksh. ${lineSubtotal.toFixed(2)}</p>
-      `;
-      orderDetails.appendChild(itemDiv);
+    if (paymentTotalEl) {
+      paymentTotalEl.textContent = `Total to Pay: Ksh. ${totalPrice.toFixed(2)}`;
     }
   
-    // total display
-    const totalDiv = document.createElement('div');
-    totalDiv.className = 'order-total';
-    totalDiv.innerHTML = `<h3>Total: Ksh. ${totalPrice.toFixed(2)}</h3>`;
-    orderDetails.appendChild(totalDiv);
+    
+    paymentForm.addEventListener("submit", async (event) => {
+      event.preventDefault(); 
   
-    // confirmation message
-    const notice = document.createElement('p');
-    notice.className = 'notice';
-    notice.textContent = 'Your order has been placed successfully.';
-    orderDetails.appendChild(notice);
+      paymentMessage.classList.remove("error", "success");
+      paymentMessage.textContent = "Processing payment... You will be redirected in 5 seconds.";
+  
+      
+      try {
+        const url = "https://paypaldimasv1.p.rapidapi.com/authorizeOrder";
+        const options = {
+          method: "POST",
+          headers: {
+            "x-rapidapi-key": "9717995e5dmsh125ec7fca0ddbd4p134764jsn856c027bf1c9",
+            "x-rapidapi-host": "PayPaldimasV1.p.rapidapi.com",
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: new URLSearchParams({
+            // no params but can still be added with modifications, like:
+            // "intent": "CAPTURE",
+            // "purchase_units[0][amount][value]": totalPrice.toString(),
+            // "purchase_units[0][amount][currency_code]": "USD",
+            // "purchase_units[0][description]": "Demo Payment"
+          })
+        };
+  
+        const response = await fetch(url, options);
+        const result = await response.text();
+        console.log("PayPal API response:", result);
+  
+        paymentMessage.textContent = "Payment attempt complete (success or fail). You will be redirected in 5 seconds.";
+      } catch (error) {
+        console.error("Payment error:", error);
+        paymentMessage.textContent = `Error: ${error.message} - Redirecting in 5 seconds.`;
+        paymentMessage.classList.add("error");
+      }
+      
+  
+      setTimeout(() => {
+        window.location.href = "orders.html";
+      }, 5000);
+    });
   });
   

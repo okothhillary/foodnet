@@ -50,7 +50,7 @@ class RestaurantApp {
             const response = await fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`);
             const data = await response.json();
 
-            // filter for showing 20 restaurants at most
+            // filter for showing 20 restaurants
             this.restaurants = data.elements
                 .map(place => ({
                     name: place.tags.name || "Anonymous!",

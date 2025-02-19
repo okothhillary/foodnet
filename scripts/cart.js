@@ -92,7 +92,9 @@ export function updateCartDisplay() {
         const checkoutBtn = document.createElement("button");
         checkoutBtn.textContent = "Checkout";
         checkoutBtn.className = "checkout-btn";
-        checkoutBtn.onclick = () => window.location.href = "payments.html";
+        checkoutBtn.onclick = () => { window.open("payments.html", "_blank");
+          };
+          
 
         cartItemsContainer.appendChild(checkoutBtn);
     }
